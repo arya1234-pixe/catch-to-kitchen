@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Catch to Kitchen</title>
+    <link rel="stylesheet" href="register-popup.css">
+</head>
+<body>
+    <div class="popup-container">
+        <h3>Register</h3>
+        <form id="register-form">
+            <input type="text" id="name" placeholder="Name" required>
+            <input type="email" placeholder="Email" required>
+            <input type="password" placeholder="Password" required>
+            <button type="submit">Register</button>
+        </form>
+        <button class="close-btn" onclick="window.close()">Close</button>
+    </div>
+    <script>
+        document.getElementById('register-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Simulate successful registration (replace with actual logic)
+            console.log('Register form submitted');
+            // Set login state and user details in localStorage
+            const name = document.getElementById('name').value;
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('username', name);
+            // Send message to parent to close the popup
+            window.opener.postMessage('closePopup', '*');
+            window.close();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catch to Kitchen - Products</title>
+    <link rel="stylesheet" href="products.css"> <!-- Separate CSS for products -->
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="logo">
+            <img src="images/ctklogo.png" alt="Catch to Kitchen Logo">
+        </div>
+        <nav>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li> <!-- Link back to home -->
+                <li><a href="products.html" class="active">Products</a></li> <!-- Active link -->
+                <li><a href="about.html">About Us</a></li> <!-- Updated href -->
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <!-- Logged-out state -->
+                <div class="auth-state auth-default">
+                    <button class="login-btn">Login</button>
+                    <button class="register-btn">Register</button>
+                </div>
+                <!-- Logged-in state -->
+                <div class="auth-state auth-logged-in" style="display: none;">
+                    <div class="user-profile">
+                        <img src="images/profile.png" alt="Profile" class="profile-icon">
+                        <span class="profile-name"></span>
+                    </div>
+                    <button class="logout-btn">Logout</button>
+                    <div class="cart-icon">
+                        <img src="images/cart.png" alt="Cart">
+                        <span class="cart-count">0</span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Products Display -->
+    <section class="products" id="products">
+        <h2>Our Products</h2>
+        <div class="products-container">
+            <div class="product-grid">
+                <div class="product-item">
+                    <img src="images/fsh.jpg" alt="Tomatoes">
+                    <h3>Tomatoes</h3>
+                    <p>$1.50/kg</p>
+                    <button>Add to Cart</button>
+                </div>
+                <div class="product-item">
+                    <img src="images/placeholder.jpg" alt="Tomatoes">
+                    <h3>Tomatoes</h3>
+                    <p>$1.50/kg</p>
+                    <button>Add to Cart</button>
+                </div>
+                <div class="product-item">
+                    <img src="images/placeholder.jpg" alt="Tomatoes">
+                    <h3>Tomatoes</h3>
+                    <p>$1.50/kg</p>
+                    <button>Add to Cart</button>
+                </div>
+                <div class="product-item">
+                    <img src="images/placeholder.jpg" alt="Tomatoes">
+                    <h3>Tomatoes</h3>
+                    <p>$1.50/kg</p>
+                    <button>Add to Cart</button>
+                </div>
+                <div class="product-item">
+                    <img src="images/mt.jpg" alt="Bananas">
+                    <h3>Bananas</h3>
+                    <p>$2.00/kg</p>
+                    <button>Add to Cart</button>
+                </div>
+                <div class="product-item">
+                    <img src="images/placeholder.jpg" alt="Bananas">
+                    <h3>Bananas</h3>
+                    <p>$2.00/kg</p>
+                    <button>Add to Cart</button>
+                </div>
+                <div class="product-item">
+                    <img src="images/veg.jpg" alt="Rice">
+                    <h3>Rice</h3>
+                    <p>$5.00/5kg</p>
+                    <button>Add to Cart</button>
+                </div>
+                <!-- Add more products as needed -->
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 Catch to Kitchen. All rights reserved.</p>
+    </footer>
+
+
+<!-- Existing content (header, sections, footer) -->
+
+<!-- Blur Overlay -->
+<div id="blur-overlay" class="blur-overlay"></div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Elements for login/register buttons and states
+        const authDefault = document.querySelector('.auth-default');
+        const authLoggedIn = document.querySelector('.auth-logged-in');
+        const profileName = document.querySelector('.profile-name');
+        const cartCount = document.querySelector('.cart-count');
+        const logoutBtn = document.querySelector('.logout-btn');
+        const blurOverlay = document.getElementById('blur-overlay');
+        let popupWindow = null;
+        let focusInterval = null;
+
+        // Cart state (stored in localStorage for persistence)
+        let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+        // Function to update cart count
+        function updateCartCount() {
+            // Reload cartItems from localStorage to ensure sync
+            cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+            if (cartCount) {
+                cartCount.textContent = cartItems.length;
+            }
+        }
+
+        // Function to update header based on login state
+        function updateHeader() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const user = JSON.parse(localStorage.getItem('user')) || { name: 'User' };
+            if (isLoggedIn) {
+                if (authDefault) authDefault.style.display = 'none';
+                if (authLoggedIn) authLoggedIn.style.display = 'flex';
+                if (profileName) profileName.textContent = user.name || 'User';
+                updateCartCount();
+            } else {
+                if (authDefault) authDefault.style.display = 'flex';
+                if (authLoggedIn) authLoggedIn.style.display = 'none';
+            }
+        }
+
+        // Initial header update
+        updateHeader();
+
+        // Listen for message from popup to close
+        window.addEventListener('message', (event) => {
+            if (event.data === 'closePopup') {
+                if (popupWindow && !popupWindow.closed) {
+                    popupWindow.close();
+                }
+                clearInterval(focusInterval);
+                blurOverlay.style.display = 'none';
+                document.body.style.filter = 'none';
+                document.body.style.pointerEvents = 'auto';
+                blurOverlay.style.pointerEvents = 'none';
+                popupWindow = null;
+                // Update header after login
+                updateHeader();
+            }
+        });
+
+        // Popup functionality for login/register
+        function openCenteredPopup(url, name) {
+            const width = 350;
+            const height = 400;
+            const left = (screen.width - width) / 2;
+            const top = (screen.height - height) / 2;
+            popupWindow = window.open(url, name, `width=${width},height=${height},scrollbars=no,resizable=no,left=${left},top=${top}`);
+            if (popupWindow) {
+                blurOverlay.style.display = 'block';
+                document.body.style.filter = 'blur(5px)';
+                document.body.style.pointerEvents = 'none';
+                blurOverlay.style.pointerEvents = 'auto';
+                popupWindow.focus();
+                focusInterval = setInterval(() => {
+                    if (popupWindow && !popupWindow.closed) {
+                        popupWindow.focus();
+                    }
+                }, 500);
+                const checkPopupClosed = setInterval(() => {
+                    if (popupWindow.closed) {
+                        clearInterval(checkPopupClosed);
+                        clearInterval(focusInterval);
+                        blurOverlay.style.display = 'none';
+                        document.body.style.filter = 'none';
+                        document.body.style.pointerEvents = 'auto';
+                        blurOverlay.style.pointerEvents = 'none';
+                        popupWindow = null;
+                        // Update header in case popup was closed manually
+                        updateHeader();
+                    }
+                }, 500);
+            }
+        }
+
+        const loginBtn = document.querySelector('.login-btn');
+        const registerBtn = document.querySelector('.register-btn');
+
+        if (loginBtn) {
+            loginBtn.addEventListener('click', () => {
+                openCenteredPopup('login-popup.html', 'LoginPopup');
+            });
+        }
+
+        if (registerBtn) {
+            registerBtn.addEventListener('click', () => {
+                openCenteredPopup('register-popup.html', 'RegisterPopup');
+            });
+        }
+
+        // Logout functionality
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', () => {
+                if (confirm('Are you sure you want to logout?')) {
+                    // Clear login state and cart data
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('user');
+                    localStorage.removeItem('cartItems');
+                    cartItems = [];
+                    updateCartCount();
+                    // Redirect to main page
+                    window.location.href = 'index.html';
+                }
+            });
+        }
+        // Navigate to cart page when cart icon is clicked
+const cartIcon = document.querySelector('.cart-icon');
+if (cartIcon) {
+    cartIcon.addEventListener('click', () => {
+        window.location.href = 'cart.html';
+    });
+}
+
+        // Scroll button functionality for products
+        const rightBtn = document.querySelector('.right-btn');
+        const leftBtn = document.querySelector('.left-btn');
+        const productGrid = document.querySelector('.product-grid');
+
+        if (rightBtn && leftBtn && productGrid) {
+            const productItem = document.querySelector('.product-item');
+            const productWidth = productItem ? productItem.offsetWidth + 20 : 220;
+
+            rightBtn.addEventListener('click', () => {
+                productGrid.scrollLeft += productWidth;
+            });
+
+            leftBtn.addEventListener('click', () => {
+                productGrid.scrollLeft -= productWidth;
+            });
+        }
+
+        // Add to Cart functionality
+        // Add to Cart functionality
+const addToCartButtons = document.querySelectorAll('.product-item button');
+addToCartButtons.forEach((button, index) => {
+    button.addEventListener('click', () => {
+        const productElement = button.parentElement;
+        const product = {
+            name: productElement.querySelector('h3').textContent,
+            price: productElement.querySelector('p').textContent,
+            id: index,
+            image: productElement.querySelector('img').src // Add the image URL
+        };
+        cartItems.push(product);
+        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+        updateCartCount();
+        alert(`${product.name} added to cart!`);
+    });
+});
+    });
+</script>
+</body>
+</html>

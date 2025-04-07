@@ -1,0 +1,375 @@
+/* Cart Section */
+.cart {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1rem;
+}
+
+.cart h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.cart-items {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 1rem;
+    min-height: 100px;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+    gap: 20px;
+}
+
+.cart-item:last-child {
+    border-bottom: none;
+}
+
+.cart-item-image {
+    flex: 0 0 auto; /* Prevent the image container from growing */
+}
+
+.cart-item-image img {
+    width: 60px; /* Fixed width for the image */
+    height: 60px; /* Fixed height for the image */
+    object-fit: cover; /* Ensure the image scales nicely */
+    border-radius: 5px; /* Optional: rounded corners */
+}
+
+.cart-item-details{
+    flex: 1;
+}
+
+.cart-item-details h4 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.cart-item-details p {
+    margin: 0.2rem 0;
+    color: #555;
+}
+
+.remove-btn {
+    padding: 0.3rem 1rem;
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.remove-btn:hover {
+    background-color: #cc0000;
+}
+
+.cart-total {
+    text-align: right;
+    margin-top: 1rem;
+}
+
+.cart-total h3 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.cart-actions {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.continue-shopping-btn, .checkout-btn {
+    padding: 0.7rem 1.5rem;
+    background-color: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.continue-shopping-btn:hover, .checkout-btn:hover {
+    background-color: #3d9f43;
+}
+
+.checkout-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+/* Include styles for header (or use a shared styles.css) */
+.auth-buttons {
+    width: 200px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.auth-state {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.auth-default {
+    display: flex;
+}
+
+.auth-logged-in {
+    display: none;
+}
+
+.auth-buttons button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login-btn, .register-btn, .logout-btn {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    background-color: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login-btn:hover, .register-btn:hover, .logout-btn:hover {
+    background-color: #3d9f43;
+}
+
+.logout-btn {
+    background-color: #ff4444;
+}
+
+.logout-btn:hover {
+    background-color: #cc0000;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.profile-name {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: black;
+}
+
+.profile-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+}
+
+.cart-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer; /* Make the cart icon clickable */
+}
+
+.cart-icon img {
+    width: 24px;
+    height: 24px;
+}
+
+.cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: red;
+    color: rgb(0, 0, 0);
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 0.7rem;
+    min-width: 16px;
+    text-align: center;
+}
+
+/* Blur Overlay */
+.blur-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+}
+
+/* Add other styles for header, nav, footer, etc. as needed */
+
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header */
+header {
+    background-color: #eaeaea;
+    color: white;
+    padding: 0.3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo img {
+    height: 50px;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.nav-menu {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav-menu a {
+    color: rgb(96, 0, 0);
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    transition: transform 0.2s ease, color 0.2s ease;
+    position: relative;
+}
+
+.nav-menu a:hover {
+    transform: translateY(-5px);
+    color: #ff8000;
+}
+
+.nav-menu a.active {
+    color: #ff8000;
+}
+
+.auth-buttons {
+    width: 200px; /* Fixed width to prevent size changes */
+    height: 40px; /* Fixed height to match button height */
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.auth-state {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.auth-default {
+    display: flex;
+}
+
+.auth-logged-in {
+    display: none; /* Hidden by default */
+}
+
+.auth-buttons button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login-btn, .register-btn, .logout-btn {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    background-color: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login-btn:hover, .register-btn:hover, .logout-btn:hover {
+    background-color: #3d9f43;
+}
+
+.logout-btn {
+    background-color: #ff4444;
+}
+
+.logout-btn:hover {
+    background-color: #cc0000;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.profile-name {
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.profile-icon {
+    width: 24px; /* Smaller size to fit */
+    height: 24px;
+    border-radius: 50%;
+}
+
+.cart-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.cart-icon img {
+    width: 24px; /* Smaller size to fit */
+    height: 24px;
+}
+
+.cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: red;
+    color: rgb(0, 0, 0);
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 0.7rem;
+    min-width: 16px;
+    text-align: center;
+}
+/* Footer */
+footer {
+    background-color: #757575;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    position: fixed;
+    bottom: 0;
+    width:100%;
+}

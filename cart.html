@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catch to Kitchen - Cart</title>
+    <link rel="stylesheet" href="cart.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="logo">
+            <img src="images/ctklogo.png" alt="Catch to Kitchen Logo">
+        </div>
+        <nav>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <!-- Logged-out state -->
+                <div class="auth-state auth-default">
+                    <button class="login-btn">Login</button>
+                    <button class="register-btn">Register</button>
+                </div>
+                <!-- Logged-in state -->
+                <div class="auth-state auth-logged-in" style="display: none;">
+                    <div class="user-profile">
+                        <img src="images/profile.png" alt="Profile" class="profile-icon">
+                        <span class="profile-name"></span>
+                    </div>
+                    <button class="logout-btn">Logout</button>
+                    <div class="cart-icon">
+                        <img src="images/cart.png" alt="Cart">
+                        <span class="cart-count">0</span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Cart Section -->
+    <section class="cart">
+        <h2>Your Cart</h2>
+        <div class="cart-items" id="cart-items">
+            <!-- Cart items will be dynamically added here -->
+        </div>
+        <div class="cart-total">
+            <h3>Total: <span id="total-price">$0.00</span></h3>
+        </div>
+        <div class="cart-actions">
+            <button class="continue-shopping-btn" onclick="window.location.href='products.html'">Continue Shopping</button>
+            <button class="checkout-btn" id="checkout-btn">Checkout</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 Catch to Kitchen. All rights reserved.</p>
+        <!-- Add footer content here if needed -->
+    </footer>
+
+    <!-- Blur Overlay -->
+    <div id="blur-overlay" class="blur-overlay"></div>
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Elements for login/register buttons and states
+            const authDefault = document.querySelector('.auth-default');
+            const authLoggedIn = document.querySelector('.auth-logged-in');
+            const profileName = document.querySelector('.profile-name');
+            const cartCount = document.querySelector('.cart-count');
+            const logoutBtn = document.querySelector('.logout-btn');
+            const blurOverlay = document.getElementById('blur-overlay');
+            const cartItemsContainer = document.getElementById('cart-items');
+            const totalPriceElement = document.getElementById('total-price');
+            const checkoutBtn = document.getElementById('checkout-btn');
+            let popupWindow = null;
+            let focusInterval = null;
+
+            // Cart state (stored in localStorage for persistence)
+            let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+            // Function to update cart count
+            function updateCartCount() {
+                cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+                if (cartCount) {
+                    cartCount.textContent = cartItems.length;
+                }
+            }
+
+            // Function to update header based on login state
+            function updateHeader() {
+                const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+                const user = JSON.parse(localStorage.getItem('user')) || { name: 'User' };
+                if (isLoggedIn) {
+                    if (authDefault) authDefault.style.display = 'none';
+                    if (authLoggedIn) authLoggedIn.style.display = 'flex';
+                    if (profileName) profileName.textContent = user.name || 'User';
+                    updateCartCount();
+                } else {
+                    if (authDefault) authDefault.style.display = 'flex';
+                    if (authLoggedIn) authLoggedIn.style.display = 'none';
+                }
+            }
+
+            // Initial header update
+            updateHeader();
+
+            // Listen for message from popup to close
+            window.addEventListener('message', (event) => {
+                if (event.data === 'closePopup') {
+                    if (popupWindow && !popupWindow.closed) {
+                        popupWindow.close();
+                    }
+                    clearInterval(focusInterval);
+                    blurOverlay.style.display = 'none';
+                    document.body.style.filter = 'none';
+                    document.body.style.pointerEvents = 'auto';
+                    blurOverlay.style.pointerEvents = 'none';
+                    popupWindow = null;
+                    // Update header after login
+                    updateHeader();
+                }
+            });
+
+            // Popup functionality for login/register
+            function openCenteredPopup(url, name) {
+                const width = 350;
+                const height = 400;
+                const left = (screen.width - width) / 2;
+                const top = (screen.height - height) / 2;
+                popupWindow = window.open(url, name, `width=${width},height=${height},scrollbars=no,resizable=no,left=${left},top=${top}`);
+                if (popupWindow) {
+                    blurOverlay.style.display = 'block';
+                    document.body.style.filter = 'blur(5px)';
+                    document.body.style.pointerEvents = 'none';
+                    blurOverlay.style.pointerEvents = 'auto';
+                    popupWindow.focus();
+                    focusInterval = setInterval(() => {
+                        if (popupWindow && !popupWindow.closed) {
+                            popupWindow.focus();
+                        }
+                    }, 500);
+                    const checkPopupClosed = setInterval(() => {
+                        if (popupWindow.closed) {
+                            clearInterval(checkPopupClosed);
+                            clearInterval(focusInterval);
+                            blurOverlay.style.display = 'none';
+                            document.body.style.filter = 'none';
+                            document.body.style.pointerEvents = 'auto';
+                            blurOverlay.style.pointerEvents = 'none';
+                            popupWindow = null;
+                            // Update header in case popup was closed manually
+                            updateHeader();
+                        }
+                    }, 500);
+                }
+            }
+
+            const loginBtn = document.querySelector('.login-btn');
+            const registerBtn = document.querySelector('.register-btn');
+
+            if (loginBtn) {
+                loginBtn.addEventListener('click', () => {
+                    openCenteredPopup('login-popup.html', 'LoginPopup');
+                });
+            }
+
+            if (registerBtn) {
+                registerBtn.addEventListener('click', () => {
+                    openCenteredPopup('register-popup.html', 'RegisterPopup');
+                });
+            }
+
+            // Logout functionality
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', () => {
+                    if (confirm('Are you sure you want to logout?')) {
+                        // Clear login state and cart data
+                        localStorage.removeItem('isLoggedIn');
+                        localStorage.removeItem('user');
+                        localStorage.removeItem('cartItems');
+                        cartItems = [];
+                        updateCartCount();
+                        renderCartItems();
+                        // Redirect to main page
+                        window.location.href = 'index.html';
+                    }
+                });
+            }
+
+            // Navigate to cart page when cart icon is clicked
+            const cartIcon = document.querySelector('.cart-icon');
+            if (cartIcon) {
+                cartIcon.addEventListener('click', () => {
+                    window.location.href = 'cart.html';
+                });
+            }
+
+            // Function to render cart items
+            function renderCartItems() {
+                cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+                cartItemsContainer.innerHTML = ''; // Clear existing items
+
+                if (cartItems.length === 0) {
+                    cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
+                    totalPriceElement.textContent = '₹0.00';
+                    checkoutBtn.disabled = true; // Disable checkout button if cart is empty
+                    return;
+                }
+
+                checkoutBtn.disabled = false; // Enable checkout button if cart has items
+
+                let total = 0;
+                cartItems.forEach((item, index) => {
+                    // Extract price as a number (remove '$' and convert to float)
+                    const price = parseFloat(item.price.replace('₹', '')) || 0;
+                    total += price;
+
+                    // Use a default image if item.image is undefined
+                    const imageSrc = item.image || 'images/default-product.jpg';
+
+                    const cartItem = document.createElement('div');
+                    cartItem.classList.add('cart-item');
+                    cartItem.innerHTML = `
+                        <div class="cart-item-image">
+                            <img src="${imageSrc}" alt="${item.name}" />
+                        </div>
+                        <div class="cart-item-details">
+                            <h4>${item.name}</h4>
+                            <p>Price: ${item.price}</p>
+                        </div>
+                        <button class="remove-btn" data-index="${index}">Remove</button>
+                    `;
+                    cartItemsContainer.appendChild(cartItem);
+                });
+
+                // Update total price
+                totalPriceElement.textContent = `₹${total.toFixed(2)}`;
+
+                // Add event listeners to remove buttons
+                const removeButtons = document.querySelectorAll('.remove-btn');
+                removeButtons.forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const index = parseInt(e.target.getAttribute('data-index'));
+                        cartItems.splice(index, 1); // Remove item from array
+                        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+                        updateCartCount();
+                        renderCartItems(); // Re-render cart items
+                    });
+                });
+            }
+
+            // Initial render of cart items
+            renderCartItems();
+
+            // Listen for changes to localStorage (e.g., cartItems updated in another tab)
+            window.addEventListener('storage', (event) => {
+                if (event.key === 'cartItems') {
+                    updateCartCount();
+                    renderCartItems();
+                }
+            });
+
+            // Checkout functionality - Send cart details to admin's WhatsApp
+            if (checkoutBtn) {
+                checkoutBtn.addEventListener('click', () => {
+                    if (cartItems.length === 0) {
+                        alert('Your cart is empty!');
+                        return;
+                    }
+
+                    // Get user details (if logged in)
+                    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+                    const user = JSON.parse(localStorage.getItem('user')) || { name: 'Guest' };
+                    const customerName = isLoggedIn ? user.name : 'Guest';
+
+                    // Prepare the order details message
+                    let message = `New Order from ${customerName}\n\n`;
+                    message += 'Order Details:\n';
+                    let total = 0;
+
+                    cartItems.forEach((item, index) => {
+                        const price = parseFloat(item.price.replace('$', '')) || 0;
+                        total += price;
+                        message += `${index + 1}. ${item.name} - ${item.price}\n`;
+                    });
+
+                    message += `\nTotal: $${total.toFixed(2)}\n`;
+                    message += `\nHey Catch to Kitchen! Here is my order`;
+
+                    // Admin's WhatsApp number (replace with actual number, e.g., +1234567890)
+                    const adminPhoneNumber = '+919633343411'; // Replace with the admin's phone number
+
+                    // Encode the message for the URL
+                    const encodedMessage = encodeURIComponent(message);
+
+                    // WhatsApp API URL
+                    const whatsappUrl = `https://wa.me/${adminPhoneNumber}?text=${encodedMessage}`;
+
+                    // Open WhatsApp with the pre-filled message
+                    window.open(whatsappUrl, '_blank');
+
+                    // Optionally clear the cart after checkout
+                    if (confirm('Order placed! Do you want to clear your cart?')) {
+                        cartItems = [];
+                        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+                        updateCartCount();
+                        renderCartItems();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

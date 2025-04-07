@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Catch to Kitchen</title>
+    <link rel="stylesheet" href="login-popup.css">
+</head>
+<body>
+    <div class="popup-container">
+        <h3>Login</h3>
+        <form id="login-form">
+            <input type="email" placeholder="Email" required>
+            <input type="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+        <p>Forgot Password? <a href="#">Click here</a></p>
+        <button class="close-btn" onclick="window.close()">Close</button>
+    </div>
+    <script>
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Simulate successful login (replace with actual logic)
+            console.log('Login form submitted');
+            // Set login state and user details in localStorage
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('username', 'User'); // Replace with actual username from form or backend
+            // Send message to parent to close the popup
+            window.opener.postMessage('closePopup', '*');
+            window.close();
+        });
+    </script>
+</body>
+</html>

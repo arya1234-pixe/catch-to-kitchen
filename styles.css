@@ -1,0 +1,471 @@
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    margin: 0;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f4f4f4; /* Adjust to match your design */
+}
+
+.logo img {
+    height: 50px;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.nav-menu {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav-menu a {
+    color: rgb(96, 0, 0);
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    transition: transform 0.2s ease, color 0.2s ease;
+    position: relative;
+}
+
+.nav-menu a:hover {
+    transform: translateY(-5px);
+    color: #ff8000;
+}
+
+.auth-buttons {
+    width: 200px; /* Fixed width to prevent size changes */
+    height: 40px; /* Fixed height to match button height */
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.auth-state {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.auth-default {
+    display: flex;
+}
+
+.auth-logged-in {
+    display: none; /* Hidden by default */
+}
+
+.auth-buttons button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login-btn, .register-btn, .logout-btn {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    background-color: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login-btn:hover, .register-btn:hover, .logout-btn:hover {
+    background-color: #3d9f43;
+}
+
+.logout-btn {
+    background-color: #ff4444;
+}
+
+.logout-btn:hover {
+    background-color: #cc0000;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.profile-name {
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.profile-icon {
+    width: 24px; /* Smaller size to fit */
+    height: 24px;
+    border-radius: 50%;
+}
+
+.cart-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.cart-icon img {
+    width: 24px; /* Smaller size to fit */
+    height: 24px;
+}
+
+.cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: red;
+    color: rgb(0, 0, 0);
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 0.7rem;
+    min-width: 16px;
+    text-align: center;
+}
+
+/* Shop by Category Section */
+.categories {
+    padding: 2rem;
+    text-align: center;
+    background-color: #fff;
+}
+
+.categories h2 {
+    margin-bottom: 1rem;
+    color: #800000;
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.category-item {
+    background-color: #f9f9f9;
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.category-item:hover {
+    transform: scale(1.05);
+}
+
+.category-item img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.category-item h3 {
+    margin: 0.5rem 0;
+    color: #FFA500;
+}
+
+/* Slider */
+.slider {
+    text-align: center;
+    padding: 1rem;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+.slider h2 {
+    margin-bottom: 0.1rem;
+    color: #800000;
+}
+
+.slides {
+    display: flex;
+    width: 200%;
+    animation: slide 20s linear infinite;
+}
+
+.slides:hover {
+    animation-play-state: paused;
+}
+
+.slide {
+    min-width: 33.33%;
+    padding: 1rem;
+    flex-shrink: 0;
+}
+
+.slide img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+}
+
+@keyframes slide {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+}
+
+/* Existing styles (header, other sections) */
+
+/* Partner Advertisements */
+.ads {
+    padding: 2rem;
+    text-align: center;
+    background-color: #f9f9f9;
+}
+
+.ads h2 {
+    margin-bottom: 1rem;
+    color: #9b2900fd;
+}
+
+.ads-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.ads-slider {
+    position: relative;
+    max-width: 600px; /* Adjust based on your image width */
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.ad-container {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.ad-slide {
+    display: none;
+    flex: 0 0 100%; /* Each slide takes full width of container */
+}
+
+.ad-slide.active {
+    display: block;
+}
+
+.ad-slide img {
+    width: 100%;
+    height: auto; /* Preserve aspect ratio, no cropping */
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.slider-dots {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-color: #ccc;
+    border-radius: 50%;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.dot.active {
+    background-color: #651b00;
+}
+
+/* Existing blur overlay styles */
+.blur-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 999;
+    pointer-events: auto;
+}
+
+/* Delivery Section (Separate Section) */
+.delivery-section {
+    width: auto; /* Fixed width */
+    text-align: left;
+    background-color: rgb(168, 168, 168); /* Background color */
+    padding: 1rem;
+    margin: 0 auto; /* Center it below partners */
+}
+
+.delivery-section h3 {
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.delivery-section .locations-list {
+    color: #ffffff;
+    text-align: center;
+    font-size: 0.8rem; /* Smaller font to fit more locations per row */
+    white-space: initial; /* Allows wrapping at spaces or separators */
+    line-height: 2; /* Adjust line spacing for wrapped rows */
+}
+
+/* Product Display */
+.products {
+    padding: 2rem;
+    text-align: center;
+}
+
+.products h2 {
+    margin-bottom: 1rem;
+    color: #800000;
+}
+
+.products-container {
+    position: relative;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.product-grid {
+    display: flex;
+    flex-wrap: nowrap; /* Prevents wrapping to next line */
+    overflow-x: auto; /* Enables horizontal scrolling */
+    scroll-behavior: smooth; /* Smooth scrolling effect */
+    width: 100%; /* Adjust based on your layout */
+    gap: 20px; /* Optional: space between product items */
+    padding: 10px 0;
+}
+
+
+.product-grid::-webkit-scrollbar {
+    display: none;
+}
+
+
+.product-item {
+    flex: 0 0 auto;
+    width: 200px; /* Fixed width for each product item */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content horizontally */
+    justify-content: space-between; /* Space between image, text, and button */
+    height: 350px; /* Fixed height for uniformity, adjust as needed */
+    box-sizing: border-box;
+    background-color: #f9f9f9; /* Optional: Add background for clarity */
+    padding: 10px;
+}
+
+.product-item img {
+    width: 100%;
+    height: 600px;
+    object-fit: cover;
+    border-radius: 8px; /* Optional: Rounded corners for images */
+}
+
+.product-item h3 {
+    margin: 10px 0 5px; /* Adjust spacing above and below title */
+    font-size: 1.2rem; /* Adjust font size as needed */
+    text-align: center;
+}
+
+.product-item p {
+    margin: 0 0 10px; /* Adjust spacing below price */
+    font-size: 1rem; /* Adjust font size as needed */
+    text-align: center;
+}
+.product-item button {
+    margin-top: auto; /* Pushes button to the bottom */
+    padding: 10px 20px;
+    font-size: 1rem;
+    width: 100%; /* Full width of the container */
+    box-sizing: border-box;
+    background-color:#800000; /* Match your theme */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.product-item button:hover {
+    background-color:#FFA500; /* Match your theme */
+}
+
+/* Scroll Buttons */
+.scroll-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #800000;
+    color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 10;
+    opacity: 30%;
+    transition: opacity 0.2s ease, background-color 0.2s ease;
+}
+
+.scroll-btn:hover {
+    opacity: 1;
+    background-color: #FFA500;
+}
+
+.left-btn {
+    left: 10px;
+}
+
+.right-btn {
+    right: 10px;
+}
+
+/* Optional: Highlight active nav link */
+.nav-menu a.active {
+    color: #ff8000; /* Highlight color for active link */
+}
+
+
+/* Footer */
+footer {
+    background-color: #757575;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    position: static;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Existing styles (header, contact, footer) */
+
+/* Blur Overlay */
+.blur-overlay {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3); /* Semi-transparent backdrop */
+    z-index: 999; /* Just below popup windows */
+}

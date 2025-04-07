@@ -1,0 +1,232 @@
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    margin: 0;
+}
+
+/* Header */
+header {
+    background-color: #eaeaea;
+    color: white;
+    padding: 0.3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo img {
+    height: 50px;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.nav-menu {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav-menu a {
+    color: rgb(96, 0, 0);
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    transition: transform 0.2s ease, color 0.2s ease;
+    position: relative;
+}
+
+.nav-menu a:hover {
+    transform: translateY(-5px);
+    color: #ff8000;
+}
+
+.nav-menu a.active {
+    color: #ff8000; /* Highlight active link */
+}
+
+.auth-buttons {
+    width: 200px; /* Fixed width to prevent size changes */
+    height: 40px; /* Fixed height to match button height */
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.auth-state {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.auth-default {
+    display: flex;
+}
+
+.auth-logged-in {
+    display: none; /* Hidden by default */
+}
+
+.auth-buttons button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    margin-right:20px;
+    cursor: pointer;
+}
+
+.login-btn, .register-btn, .logout-btn {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    background-color: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login-btn:hover, .register-btn:hover, .logout-btn:hover {
+    background-color: #3d9f43;
+}
+
+.logout-btn {
+    background-color: #ff4444;
+}
+
+.logout-btn:hover {
+    background-color: #cc0000;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.profile-name {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: black;
+}
+
+.profile-icon {
+    width: 24px; /* Smaller size to fit */
+    height: 24px;
+    border-radius: 50%;
+}
+
+.cart-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.cart-icon img {
+    width: 24px; /* Smaller size to fit */
+    height: 24px;
+}
+
+.cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: red;
+    color: rgb(0, 0, 0);
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 0.7rem;
+    min-width: 16px;
+    text-align: center;
+}
+
+/* Product Display */
+.products {
+    padding: 2rem;
+    text-align: center;
+}
+
+.products h2 {
+    margin-bottom: 1rem;
+    color: #2e7d32;
+}
+
+.products-container {
+    position: relative;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    padding: 0 1rem;
+    overflow-x: unset;
+}
+
+.product-item {
+    background-color: #fff;
+    padding: 1rem 0;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 250px;
+    flex-shrink: 0;
+    box-sizing: border-box;
+}
+
+.product-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    margin-bottom: 0.25rem;
+}
+
+.product-item h3 {
+    margin: 0.15rem 0;
+    font-size: 1rem;
+}
+
+.product-item p {
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+}
+
+/* Footer */
+footer {
+    background-color: #757575;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    width: 100%;
+    position: relative;
+    bottom: 0;
+}
+
+/* Existing styles (header, contact, footer) */
+
+/* Blur Overlay */
+.blur-overlay {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3); /* Semi-transparent backdrop */
+    z-index: 999; /* Just below popup windows */
+}
